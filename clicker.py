@@ -8,6 +8,9 @@ from selenium.common.exceptions import NoSuchWindowException, InvalidSessionIdEx
 import time
 import json
 
+import webbrowser
+import requests
+
 # Declare driver as a global variable
 driver = []
 current_page = 0
@@ -313,8 +316,38 @@ url_label.grid(row=0, column=0, pady=10)
 url_entry = Entry(root, width=30)
 url_entry.grid(row=0, column=1, pady=10)
 
-# Set a default URL for testing
-url_entry.insert(0, "https://lichess.org/iLxKgl0b")
+# Set default Lichess URL
+default_url = "https://lichess.org/iLxKgl0b"
+
+# Open default URL in new window
+webbrowser.open(default_url)
+
+# Lichess API key
+lichess_api_key = 'lip_Tn7ko1Q0caCDZyEP9n1T'
+
+# Headers with API key
+lichess_headers = {'Authorization': f'Bearer {lichess_api_key}'}
+
+# API endpoint for account info
+account_url = 'https://lichess.org/api/account'
+
+# Verify authentication
+requests.get(account_url, headers=lichess_headers)
+
+# API endpoint for preferences
+preferences_url = 'https://lichess.org/api/account/preferences'
+
+# Preferences settings
+lichess_prefs = {
+  'pieceSet': 'cburnett',
+  'boardTheme': 'blue',
+  'background': 'blue'
+}
+
+# Update preferences
+requests.put(preferences_url, headers=lichess_headers, json=lichess_prefs)
+
+
 
 # Create and pack entry widgets for durations
 duration_entries = []
